@@ -78,7 +78,10 @@ EXTERNFLAG  void x264_cabac_encode_terminal_asm( x264_cabac_t *cb );
 #define x264_cabac_encode_decision x264_cabac_encode_decision_arm
 #define x264_cabac_encode_bypass x264_cabac_encode_bypass_arm
 #define x264_cabac_encode_terminal x264_cabac_encode_terminal_arm
-
+#elif defined(ARCH_AARCH64)
+#define x264_cabac_encode_decision x264_cabac_encode_decision_asm
+#define x264_cabac_encode_bypass x264_cabac_encode_bypass_asm
+#define x264_cabac_encode_terminal x264_cabac_encode_terminal_asm
 #else
 #define x264_cabac_encode_decision x264_cabac_encode_decision_c
 #define x264_cabac_encode_bypass x264_cabac_encode_bypass_c

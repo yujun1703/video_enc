@@ -691,6 +691,7 @@ void x264_quant_init( x264_t *h, int cpu, x264_quant_function_t *pf )
     if( cpu&X264_CPU_ARMV6 )
         pf->coeff_last4 = x264_coeff_last4_arm;
 
+/*
     if( cpu&X264_CPU_NEON )
     {
         pf->quant_2x2_dc   = x264_quant_2x2_dc_neon;
@@ -704,7 +705,45 @@ void x264_quant_init( x264_t *h, int cpu, x264_quant_function_t *pf )
         pf->coeff_last[DCT_LUMA_4x4] = x264_coeff_last16_neon;
         pf->coeff_last[DCT_LUMA_8x8] = x264_coeff_last64_neon;
     }
+    */
 #endif
+
+#if HAVE_ARMV6 || ARCH_AARCH64
+    if( cpu&X264_CPU_NEON )
+    {
+        pf->quant_2x2_dc   = x264_quant_2x2_dc_neon;
+        pf->quant_4x4      = x264_quant_4x4_neon;
+        pf->quant_4x4_dc   = x264_quant_4x4_dc_neon;
+        pf->quant_4x4x4    = x264_quant_4x4x4_neon;
+        pf->quant_8x8      = x264_quant_8x8_neon;
+        pf->dequant_4x4    = x264_dequant_4x4_neon;
+        pf->dequant_4x4_dc = x264_dequant_4x4_dc_neon;
+        pf->dequant_8x8    = x264_dequant_8x8_neon;
+        pf->coeff_last[ DCT_LUMA_AC] = x264_coeff_last15_neon;
+        pf->coeff_last[DCT_LUMA_4x4] = x264_coeff_last16_neon;
+        pf->coeff_last[DCT_LUMA_8x8] = x264_coeff_last64_neon;
+    }
+#endif
+#if ARCH_AARCH64
+    if( cpu&X264_CPU_ARMV8 )
+    {
+        pf->coeff_last4 = x264_coeff_last4_aarch64;
+        pf->coeff_last8 = x264_coeff_last8_aarch64;
+        pf->coeff_level_run4 = x264_coeff_level_run4_aarch64;
+    }
+    if( cpu&X264_CPU_NEON )
+    {
+        pf->coeff_level_run8 = x264_coeff_level_run8_neon;
+        pf->coeff_level_run[  DCT_LUMA_AC] = x264_coeff_level_run15_neon;
+        pf->coeff_level_run[ DCT_LUMA_4x4] = x264_coeff_level_run16_neon;
+        pf->decimate_score15 = x264_decimate_score15_neon;
+        pf->decimate_score16 = x264_decimate_score16_neon;
+        pf->decimate_score64 = x264_decimate_score64_neon;
+        pf->denoise_dct = x264_denoise_dct_neon;
+    }
+#endif
+
+
 #endif // HIGH_BIT_DEPTH
     pf->coeff_last[DCT_LUMA_DC]     = pf->coeff_last[DCT_CHROMAU_DC]  = pf->coeff_last[DCT_CHROMAV_DC] =
     pf->coeff_last[DCT_CHROMAU_4x4] = pf->coeff_last[DCT_CHROMAV_4x4] = pf->coeff_last[DCT_LUMA_4x4];

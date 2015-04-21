@@ -90,6 +90,10 @@ const x264_cpu_name_t x264_cpu_names[] =
     {"SlowCTZ",         X264_CPU_SLOW_CTZ},
     {"SlowAtom",        X264_CPU_SLOW_ATOM},
     {"", 0},
+   // #elif ARCH_AARCH64
+
+    {"ARMv8",           X264_CPU_ARMV8},
+    {"NEON",            X264_CPU_NEON},
 };
 
 #if (ARCH_PPC && SYS_LINUX) || (ARCH_ARM && !HAVE_NEON)
@@ -319,7 +323,12 @@ uint32_t x264_cpu_detect( void )
 
     return cpu;
 }
+#elif ARCH_AARCH64
 
+uint32_t x264_cpu_detect( void )
+{
+    return X264_CPU_ARMV8 | X264_CPU_NEON;
+}
 #elif SYS_LINUX
 
 uint32_t x264_cpu_detect( void )

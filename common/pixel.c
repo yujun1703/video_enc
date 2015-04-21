@@ -40,7 +40,10 @@
 #if ARCH_UltraSPARC
 #   include "sparc/pixel.h"
 #endif
-
+#if ARCH_AARCH64
+#   include "aarch64/pixel.h"
+#   include "aarch64/predict.h"
+#endif
 
 /****************************************************************************
  * pixel_sad_WxH

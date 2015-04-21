@@ -25,6 +25,7 @@
  *****************************************************************************/
 
 #include "common.h"
+uint8_t *x264_nal_escape_neon( uint8_t *dst, uint8_t *src, uint8_t *end );
 
 static uint8_t *x264_nal_escape_c( uint8_t *dst, uint8_t *src, uint8_t *end )
 {
@@ -97,4 +98,8 @@ void x264_bitstream_init( int cpu, x264_bitstream_function_t *pf )
     if( cpu&X264_CPU_AVX )
         pf->nal_escape = x264_nal_escape_avx;
 #endif
+
+#if ARCH_AARCH64
+    if( cpu&X264_CPU_NEON )
+        pf->nal_escape = x264_nal_escape_neon;
 }
