@@ -297,8 +297,8 @@ void x264_plane_copy_c( pixel *dst, intptr_t i_dst,
         src += i_src;
     }
 }
-
-void x264_plane_copy_interleave_c1( pixel *dst,  intptr_t i_dst,
+#if 1
+void x264_plane_copy_interleave_c( pixel *dst,  intptr_t i_dst,
                                    pixel *srcu, intptr_t i_srcu,
                                    pixel *srcv, intptr_t i_srcv, int w, int h )
 {
@@ -310,7 +310,7 @@ void x264_plane_copy_interleave_c1( pixel *dst,  intptr_t i_dst,
         }
 }
 
-
+#else
 void x264_plane_copy_interleave_c( pixel *dst,  intptr_t i_dst,
                                    pixel *srcu, intptr_t i_srcu,
                                    pixel *srcv, intptr_t i_srcv, int w, int h )
@@ -359,7 +359,7 @@ void x264_plane_copy_interleave_c( pixel *dst,  intptr_t i_dst,
     
     /**/
 }
-
+#endif
 static void x264_plane_copy_deinterleave_c( pixel *dstu, intptr_t i_dstu,
                                             pixel *dstv, intptr_t i_dstv,
                                             pixel *src,  intptr_t i_src, int w, int h )
