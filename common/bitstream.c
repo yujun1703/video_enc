@@ -102,4 +102,5 @@ void x264_bitstream_init( int cpu, x264_bitstream_function_t *pf )
 #if ARCH_AARCH64
     if( cpu&X264_CPU_NEON )
         pf->nal_escape = x264_nal_escape_neon;
+#endif
 }
